@@ -42,7 +42,9 @@ def main(dataset_path: str, gold: str) -> None:
     ]
     start_char = start_chars.pop(0)
     start_index = 0
-    for vector, file in zip(tf_idf_vectors, file_paths):
+    max_files = 4100
+    num_files = 0
+    for i, (vector, file) in enumerate(zip(tf_idf_vectors, file_paths)):
         if not os.path.basename(file).startswith(start_char):
             data = np.vstack(cos_sim)
             data = scipy.sparse.csc_matrix(data)
@@ -57,15 +59,25 @@ def main(dataset_path: str, gold: str) -> None:
                 break
             cos_sim = []
             data = []
+            num_files = 0
+        if num_files >= max_files:
+            data = np.vstack(cos_sim)
+            data = scipy.sparse.csc_matrix(data)
+            scipy.sparse.save_npz(
+                os.path.join(gold, f"{start_char}_{start_index}"), data
+            )
+            start_index += len(cos_sim)
+            cos_sim = []
+            data = []
+            num_files = 0
         vec = cosine_similarity(vector, tf_idf_vectors).astype(np.float32)
         cos_sim.append(vec)
+        num_files += 1
     else:
         data = np.vstack(cos_sim)
         data = scipy.sparse.csc_matrix(data)
         scipy.sparse.save_npz(os.path.join(gold, f"{start_char}_{start_index}"), data)
 
-
-# TODO for dta : split batch starting with 0 into two parts (8000)
 
 if __name__ == "__main__":
     input_dir, gold = sys.argv[1:]
