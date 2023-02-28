@@ -17,9 +17,9 @@ def ndcg_score_adapted(y_true, y_score, k=None, ignore_ties=False):
     Instead of returning averages as the original version, this
     version resturn a vector of scores.
     """
-    # y_true = sku.check_array(y_true, ensure_2d=False)
-    # y_score = sku.check_array(y_score, ensure_2d=False)
-    # sku.check_consistent_length(y_true, y_score)
+    y_true = sku.check_array(y_true, ensure_2d=False)
+    y_score = sku.check_array(y_score, ensure_2d=False)
+    sku.check_consistent_length(y_true, y_score)
     skm._ranking._check_dcg_target_type(y_true)
     return skm._ranking._ndcg_sample_scores(
         y_true, y_score, k=k, ignore_ties=ignore_ties
@@ -41,9 +41,9 @@ def compute_scores(gold_dir: str, scores_dir: str) -> npt.NDArray:
     )
     assert len(gold_files) == len(result_files)
 
-    for gold_file, result_files in zip(gold_files, result_files):
+    for gold_file, result_file in zip(gold_files, result_files):
         gold_matrix = scipy.sparse.load_npz(gold_file).toarray().astype(np.float32)
-        result_matrix = scipy.sparse.load_npz(result_files).toarray().astype(np.float32)
+        result_matrix = scipy.sparse.load_npz(result_file).toarray().astype(np.float32)
         scores = ndcg_score_adapted(gold_matrix, result_matrix, k=100)
         all_ndcg_scores.append(scores)
     return np.concatenate(all_ndcg_scores)
