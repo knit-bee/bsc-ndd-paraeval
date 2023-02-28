@@ -9,7 +9,7 @@ Then, (preferably after setting up a virtual environment,) install requirements 
 $ pip install -r requirements.txt
 ```
 
-After that, the data generation can be conducted by calling the Python script and passing the name of the config file and the dataset that to process.
+After that, the data generation can be conducted by calling the Python script and passing the name of the config file and the dataset to process.
 It is assumed that the German word list is located in the working directory and stored under the original name (`wordlist-german.txt`).
 
 ### Example:

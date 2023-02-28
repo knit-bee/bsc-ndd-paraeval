@@ -1,9 +1,9 @@
 # evaluation
-First install requirements with (inside a virtual environment):
+First, install requirements with (inside a virtual environment):
 ```sh
 $ pip install -r requirements.txt
 ```
-To run the deduplication experiments, first the gold standard has to be computed with:
+To run the deduplication experiments, the gold standard has to be computed beforehand with:
 ```sh
 $ python ground_truth_estimation.py dataset gold_dir
 ```
