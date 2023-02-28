@@ -140,7 +140,7 @@ def main(config_file: str, dataset: str) -> None:
     os.makedirs(augmenter.output_dir, exist_ok=True)
     count = 0
     for file in all_files:
-        if count >= 10000:
+        if count >= 5000:
             break
         if augmenter.file_processed(file):
             count += 1
